@@ -1,6 +1,8 @@
 % TPPE29 - Financial Markets and Instruments, Linkoping University.
 % Submission task: Option pricing with binomial method
 
+fprintf("\nFinancial Markets and Instruments, " + ...
+    "Option pricing using binomial tree models\n\n")
 
 % Task 1 - Value an European call option without dividend
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -15,9 +17,10 @@ K = 55;                         % Strike price
 sigma = 0.2;                    % Spread
 fiscal_periods = 8;             % Number of periods.
 
-fprintf("\nTask 1:")
-
-CalculateCallOption(T, sigma, fiscal_periods, S0, K, r, 0, 0, 0, "C-EU")
+disp("Task 1:")
+fprintf("European call option without dividend\n\n")
+disp(CalculateCallOption(T, sigma, fiscal_periods, S0, K, r, 0, 0,...
+    0, "C-EU"));
 
 
 % Task 2 - Value an European call option on OMSX30 using Black-Scholes
@@ -51,7 +54,9 @@ disp(" ") % new line
 
 % Task 2b
 disp("Task 2b:")
-CalculateCallOption(T, sigmaOpt, fiscal_periods, S0, K, r, 0, 0, 0, "C-EU")
+fprintf("OMXS30 call option without dividend\n\n")
+disp(CalculateCallOption(T, sigmaOpt, fiscal_periods, S0, K, r, 0, 0,...
+    0, "C-EU"));
 
 % Task 2c
 disp("Task 2c:")
@@ -69,6 +74,7 @@ for fiscal_periods = 5:200
 end
 plot(optionPrices);
 disp("Converging Value: " + convergingValue)
+disp(" ") % new line
 
 % Task 3 - Value an European or American call option with dividend
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,13 +94,15 @@ fiscal_periods = 8;             % Number of periods.
 
 tdiv = Tdiv / 252;        
 Sstar = S0 - DIV * exp(-r*tdiv);
-fprintf("\nTask 3: \n")
+disp("Task 3:")
 % Prints bintree for European Call option
-CalculateCallOption(T, sigma, fiscal_periods, Sstar, K, r, DIV,...
-    tdiv, 0, "C-EU")
+fprintf("European call option with dividend\n\n")
+disp(CalculateCallOption(T, sigma, fiscal_periods, Sstar, K, r, DIV,...
+    tdiv, 0, "C-EU"));
 % Prints bintree for American Call option
-CalculateCallOption(T, sigma, fiscal_periods, Sstar, K, r, DIV,...
-    tdiv, 0, "C-AM")
+fprintf("American call option with dividend\n\n")
+disp(CalculateCallOption(T, sigma, fiscal_periods, Sstar, K, r, DIV,...
+    tdiv, 0, "C-AM"));
 
 
 % Task 4 - Value an American call option for SAAB AB.
@@ -112,14 +120,21 @@ K = 430;                        % Strike price
 sigma = 0.3593;                 % Spread
 DIV = 4.90;                     % Divident
 fiscal_periods = 200;           % Number of periods.
+ask = 36.75;                    % Ask price
+bid = 30.75;                    % bid price
 
 tdiv = Tdiv / 252;        
 Sstar = S0 - DIV * exp(-r*tdiv);
-disp("Task 4:")
+mid = (ask + bid) / 2;
+
 optTree = CalculateCallOption(T, sigma, fiscal_periods, Sstar, K,...
     r, DIV, tdiv, 0, "C-AM");
+deviation = (mid - optTree(1,1)) / mid;
+
+disp("Task 4:")
 disp("Option Price: " + optTree(1,1));
-disp(" ") % newline
+disp("deviation from market price: " + deviation * 100 + "%")
+disp(" ") % new line
 
 
 % Task 5 - Value an Up-and-In barrier Option.
@@ -132,7 +147,7 @@ T2 = datetime(2023,3,17);       % End date
 T = days252bus(T1,T2);          % Business days 
 S0 = 2096.462;                  % Spot price
 K = 2100;                       % Strike price
-fiscal_periods = 10;            % Number of periods.
+fiscal_periods = 30;            % Number of periods.
 sigma = sigmaOpt;               % Spread (from task 2)
 
 disp("Task 5:")
@@ -143,12 +158,13 @@ H = S0 * 1.05; % Barrier
 upAndOut = UpAndOut(S0, K, r, T, sigma, H); % Calc up and out price with BS
 plainVanilla = BlackScholes(r, sigma, T, S0, K); % price of plain option
 
-
 upAndIn = plainVanilla - upAndOut;
 disp("Up and in model using Black Scholes")
-disp("Plain vanilla price " + plainVanilla);
-disp("Up and in option price " + upAndIn);
+disp("Plain vanilla price: " + plainVanilla);
+disp("Up and out option price: " + upAndOut);
+disp("Up and in option price: " + upAndIn);
 disp(" ") % new line
+
 
 % Using binomial option tree
 upAndOut = CalculateCallOption(T, sigma, fiscal_periods, S0, K, r, 0, 0,...
@@ -157,8 +173,9 @@ plainVanilla = CalculateCallOption(T, sigma, fiscal_periods, S0, K, r,...
     0, 0, 0, "C-EU");
 disp("Up and in model using binomial Tree")
 upAndIn = plainVanilla(1,1) - upAndOut(1,1);
-disp("Plain vanilla price " + plainVanilla(1,1));
-disp("Up and in option price " + upAndIn)
+disp("Plain vanilla price: " + plainVanilla(1,1));
+disp("Up and out option price: " + upAndOut(1,1));
+disp("Up and in option price: " + upAndIn);
 
 
 % Functions
@@ -195,7 +212,7 @@ function optionBinTree = CalculateCallOption(T, sigma, ...
         for i = fiscal_periods:-1:0
             for k = 0:i
                 if i == fiscal_periods
-                    if underlyingTree(k+1, i+1) > H && upOut
+                    if underlyingTree(k+1, i+1) > H && upOut 
                         optionTree(k+1, i+1) = 0;
                     else
                         optionTree(k+1, i+1) = ...
@@ -238,7 +255,6 @@ function optionBinTree = CalculateCallOption(T, sigma, ...
         end
         optionBinTree = optionTree;
     end
-
 
 end
 
