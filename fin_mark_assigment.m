@@ -62,7 +62,7 @@ disp(CalculateCallOption(T, sigmaOpt, fiscal_periods, S0, K, r, 0, 0,...
 disp("Task 2c:")
 optionPrices = zeros(1,195); % Instantiate empty vector
 convergingValue = 0;
-for fiscal_periods = 5:200
+for fiscal_periods = 1:200
     optionTree = CalculateCallOption(T, sigmaOpt, fiscal_periods, S0, K,...
         r, 0, 0, 0, "C-EU");
     optionPrice = optionTree(1,1);
