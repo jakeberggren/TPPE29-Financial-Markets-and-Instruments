@@ -12,9 +12,9 @@ r = 0.0278;                     % risk free interest rate
 T1 = datetime(2022,11,28);      % Start date
 T2 = datetime(2023,7,21);       % End date
 T = days252bus(T1,T2);          % Business days
-S0 = 62;                         % Underlying Value
+S0 = 62;                        % Underlying Value
 K = 55;                         % Strike price
-sigma = 0.2;                    % Spread
+sigma = 0.2;                    % Volatility
 fiscal_periods = 8;             % Number of periods.
 
 disp("Task 1:")
@@ -88,7 +88,7 @@ T = days252bus(T1,T2);          % Business days
 Tdiv = days252bus(T1, T2div);   % Divident time
 S0 = 62;                        % Spot price
 K = 55;                         % Strike price
-sigma = 0.2;                    % Spread
+sigma = 0.2;                    % Volatility
 DIV = 8;                        % Divident
 fiscal_periods = 8;             % Number of periods.
 
@@ -117,7 +117,7 @@ T = days252bus(T1,T2);          % Business days
 Tdiv = days252bus(T1, T2div);   % Divident time
 S0 = 385.90;                    % Spot price
 K = 430;                        % Strike price
-sigma = 0.3593;                 % Spread
+sigma = 0.3593;                 % Volatility
 DIV = 4.90;                     % Divident
 fiscal_periods = 200;           % Number of periods.
 ask = 36.75;                    % Ask price
@@ -133,7 +133,7 @@ deviation = (mid - optTree(1,1)) / mid;
 
 disp("Task 4:")
 disp("Option Price: " + optTree(1,1));
-disp("deviation from market price: " + deviation * 100 + "%")
+disp("Deviation from market price: " + deviation * 100 + "%")
 disp(" ") % new line
 
 
@@ -148,7 +148,7 @@ T = days252bus(T1,T2);          % Business days
 S0 = 2096.462;                  % Spot price
 K = 2100;                       % Strike price
 fiscal_periods = 30;            % Number of periods.
-sigma = sigmaOpt;               % Spread (from task 2)
+sigma = sigmaOpt;               % Volatility (from task 2)
 
 disp("Task 5:")
 
